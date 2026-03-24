@@ -12,7 +12,7 @@ from config.base import (
     GCS_DESTINATION_FOLDER
 )
 from config.logger import setup_logger
-from schemas.schema import get_product_info_pyarrow_schema
+from schema.schemas import get_product_info_pyarrow_schema
 
 logger = setup_logger(
     name="load_product_to_gcs",

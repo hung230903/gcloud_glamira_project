@@ -32,7 +32,7 @@ GCS_SUMMARY_FOLDER = os.getenv("GCS_SUMMARY_FOLDER", "summary_data")
 SUMMARY_BSON_PATH = os.getenv("SUMMARY_BSON_PATH", "data/glamira-data/summary.bson")
 
 # MongoDB
-MONGO_URI = os.getenv("MONGODB_URI", "mongodb://admin:strongpass9999@34.81.118.35:27017/admin")
+MONGO_URI = os.getenv("MONGODB_URI")
 MONGO_DB = os.getenv("MONGODB_DB_NAME", "glamira")
 SUMMARY_COLLECTION = os.getenv("MONGODB_RAW_DATA_COL", "summary")
 IP_COLLECTION = os.getenv("MONGODB_IP2LOCATION_COL", "ip_location")

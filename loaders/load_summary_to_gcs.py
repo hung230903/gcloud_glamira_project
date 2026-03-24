@@ -26,7 +26,7 @@ from processing.summary_transformer import (
 )
 from utils.checkpoint_utils import get_checkpoint_manager
 from bson import ObjectId
-from schemas.schema import (
+from schema.schemas import (
     get_summary_pyarrow_schema,
     get_ip2location_pyarrow_schema,
 )
