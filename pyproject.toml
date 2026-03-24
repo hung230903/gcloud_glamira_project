@@ -1,0 +1,20 @@
+[project]
+name = "gcloud-glamira-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp[speedups]>=3.13.3",
+    "brotli>=1.2.0",
+    "db-dtypes>=1.4.4",
+    "dotenv>=0.9.9",
+    "google-cloud-bigquery>=3.40.1",
+    "google-cloud-storage>=3.10.0",
+    "ip2location>=8.11.0",
+    "pandas>=3.0.0",
+    "prometheus-client>=0.24.1",
+    "pyarrow>=23.0.1",
+    "pymongo>=4.16.0",
+    "python-dotenv>=1.2.1",
+]
