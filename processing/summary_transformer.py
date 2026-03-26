@@ -5,8 +5,21 @@ def transform_summary_data(df):
     Dùng để làm sạch dữ liệu TRƯỚC khi nạp vào Schema của PyArrow.
     Ép kiểu String/Int/Bool triệt để cho cả các RECORD lồng nhau.
     """
+    # 0. Đổi tên trường để khớp với schema mới
+    rename_rules = {
+        'cat_id': 'category_id',
+        'collect_id': 'collection_id'
+    }
+    for old_name, new_name in rename_rules.items():
+        if old_name in df.columns:
+            df = df.rename(columns={old_name: new_name})
+
     bool_cols = ['show_recommendation', 'recommendation', 'is_paypal']
-    int_cols = ['recommendation_product_position', 'amount']
+    int_cols = [
+        'recommendation_product_position', 'amount', 
+        'product_id', 'viewing_product_id', 'recommendation_product_id',
+        'category_id', 'collection_id', 'order_id'
+    ]
     nested_cols = ['option', 'cart_products']
 
     def safe_bool(val):
@@ -26,9 +39,18 @@ def transform_summary_data(df):
             if not isinstance(item, dict):
                 continue
             
-            # Ép kiểu String cho mọi field được config là STRING trong BigQuery
+            # Ép kiểu cho các field trong cart_products
             if is_cart_products:
-                for k in ['product_id', 'price', 'currency']:
+                # product_id cast to INT64
+                if 'product_id' in item:
+                    try:
+                        item['product_id'] = int(pd.to_numeric(item['product_id'], errors='coerce'))
+                        if pd.isna(item['product_id']): item['product_id'] = None
+                    except:
+                        item['product_id'] = None
+                
+                # price, currency cast as STRING
+                for k in ['price', 'currency']:
                     if k in item: item[k] = str(item[k]) if item[k] is not None else None
                 
                 # Ép kiểu Int hợp lệ cho amount
@@ -50,15 +72,27 @@ def transform_summary_data(df):
                             for f in ['option_id', 'option_label', 'value_id', 'value_label']:
                                 if f in sub_opt: sub_opt[f] = str(sub_opt[f]) if sub_opt[f] is not None else None
             else:
+                # Đổi tên trường lồng nhau để khớp schema
+                if 'kollektion' in item: item['collection'] = item.pop('kollektion')
+                if 'kollektion_id' in item: item['collection_id'] = item.pop('kollektion_id')
+
                 # Ép kiểu String cho các field trong mảng 'option' ngoài cùng
                 for field in [
                     'option_label', 'option_id', 'value_label', 'value_id', 
                     'quality', 'quality_label', 'alloy', 'diamond', 'shapediamond', 
-                    'stone', 'pearlcolor', 'finish', 'price', 'category_id', 
-                    'kollektion', 'kollektion_id'
+                    'stone', 'pearlcolor', 'finish', 'price', 'collection'
                 ]:
                     if field in item:
                         item[field] = str(item[field]) if item[field] is not None else None
+                
+                # Ép kiểu INT cho các ID trong mảng 'option'
+                for int_f in ['category_id', 'collection_id']:
+                    if int_f in item:
+                        try:
+                            item[int_f] = int(pd.to_numeric(item[int_f], errors='coerce'))
+                            if pd.isna(item[int_f]): item[int_f] = None
+                        except:
+                            item[int_f] = None
 
             cleaned_list.append(item)
         return cleaned_list

@@ -25,21 +25,21 @@ def step_pid_filter():
     logger.info("--- STAGE 2: PID FILTER ---")
     # with StageTimer("pid_filter"):
     run_pid_filter()
-
+#
 def step_product_crawler():
-    """BƯỚC 3: Crawl thông tin sản phẩm từ các URL đã lọc."""
+    # """BƯỚC 3: Crawl thông tin sản phẩm từ các URL đã lọc."""
     logger.info("--- STAGE 3: PRODUCT CRAWLER ---")
     # with StageTimer("product_crawler"):
     run_product_crawler(batch_size=CRAWLER_BATCH_SIZE)
 
 def step_product_info_to_gcs():
-    """BƯỚC 3.5: Đẩy dữ liệu product_info vừa crawl lên GCS."""
+    # """BƯỚC 3.5: Đẩy dữ liệu product_info vừa crawl lên GCS."""
     logger.info("--- STAGE 3.5: PRODUCT INFO TO GCS ---")
     run_load_product_to_gcs()
-
+#
 def step_export_to_gcs():
     """BƯỚC 4: Export dữ liệu từ MongoDB sang GCS dưới dạng Parquet."""
-    logger.info("--- STAGE 4: EXPORT TO GCS ---")
+    # logger.info("--- STAGE 4: EXPORT TO GCS ---")
     # with StageTimer("export_to_gcs"):
     export_to_gcs()
 
@@ -55,16 +55,16 @@ def main():
     
     try:
         # 1. Làm giàu dữ liệu IP
-        step_ip_to_location()
+#         step_ip_to_location()
         
         # 2. Lọc PID
-        step_pid_filter()
+#         step_pid_filter()
         
         # 3. Crawl dữ liệu sản phẩm mới
-        step_product_crawler()
+        # step_product_crawler()
         
         # 3.5 Load Product Info to GCS (JSON -> Parquet)
-        step_product_info_to_gcs()
+        # step_product_info_to_gcs()
         
         # 4. Export dữ liệu sang GCS
         step_export_to_gcs()

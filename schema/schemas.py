@@ -18,9 +18,9 @@ def get_summary_pyarrow_schema():
         pa.field("pearlcolor", pa.string()),
         pa.field("finish", pa.string()),
         pa.field("price", pa.string()),
-        pa.field("category_id", pa.string()),
-        pa.field("kollektion", pa.string()),
-        pa.field("kollektion_id", pa.string()),
+        pa.field("category_id", pa.int64()),
+        pa.field("collection", pa.string()),
+        pa.field("collection_id", pa.int64()),
     ]
 
     cart_option_fields = [
@@ -31,7 +31,7 @@ def get_summary_pyarrow_schema():
     ]
 
     cart_products_fields = [
-        pa.field("product_id", pa.string()),
+        pa.field("product_id", pa.int64()),
         pa.field("price", pa.string()),
         pa.field("currency", pa.string()),
         pa.field("amount", pa.int64()),
@@ -55,13 +55,13 @@ def get_summary_pyarrow_schema():
         ("recommendation", pa.bool_()),
         ("utm_source", pa.string()),
         ("collection", pa.string()),
-        ("product_id", pa.string()),
-        ("viewing_product_id", pa.string()),
-        ("cat_id", pa.string()),
-        ("collect_id", pa.string()),
+        ("product_id", pa.int64()),
+        ("viewing_product_id", pa.int64()),
+        ("category_id", pa.int64()),
+        ("collection_id", pa.int64()),
         ("option", pa.list_(pa.struct(option_fields))),
-        ("order_id", pa.string()),
-        ("recommendation_product_id", pa.string()),
+        ("order_id", pa.int64()),
+        ("recommendation_product_id", pa.int64()),
         ("recommendation_clicked_position", pa.string()),
         ("utm_medium", pa.string()),
         ("key_search", pa.string()),
@@ -234,12 +234,12 @@ def get_product_info_pyarrow_schema():
         ("fixed_silver_weight", pa.float64()),
         ("material_design", pa.string()),
         ("collection", pa.string()),
-        ("collection_id", pa.string()),
+        ("collection_id", pa.int64()),
         ("product_type", pa.string()),
         ("product_type_value", pa.string()),
-        ("category", pa.int64()),
+        ("category_id", pa.int64()),
         ("category_name", pa.string()),
-        ("store_code", pa.string()),
+        ("store_id", pa.string()),
         ("gender", pa.string()),
         
         # Nested Structures
@@ -249,4 +249,5 @@ def get_product_info_pyarrow_schema():
         ("color", pa.list_(pa.struct(color_fields))),
         ("custom", pa.list_(pa.struct(common_option_fields))),
     ])
+
     return schema
