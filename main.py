@@ -39,7 +39,7 @@ def step_product_info_to_gcs():
 #
 def step_export_to_gcs():
     """BƯỚC 4: Export dữ liệu từ MongoDB sang GCS dưới dạng Parquet."""
-    # logger.info("--- STAGE 4: EXPORT TO GCS ---")
+    logger.info("--- STAGE 4: EXPORT TO GCS ---")
     # with StageTimer("export_to_gcs"):
     export_to_gcs()
 
@@ -67,7 +67,7 @@ def main():
         # step_product_info_to_gcs()
         
         # 4. Export dữ liệu sang GCS
-        step_export_to_gcs()
+        # step_export_to_gcs()
         
         # 5. Nạp vào BigQuery
         step_bigquery_load()

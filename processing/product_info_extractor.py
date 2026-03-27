@@ -52,7 +52,7 @@ def extract_product_data(html):
                 data["options"] = json.dumps(options) # Lưu toàn bộ options dưới dạng JSON string để dự phòng
 
                 stone_list = []
-                color_list = []
+                colour_list = []
                 custom_list = []
 
                 for option in options:
@@ -61,14 +61,18 @@ def extract_product_data(html):
                     if group == "stone":
                         stone_list.extend(values)
                     elif group == "alloy":
-                        color_list.extend(values)
+                        # Đổi tên 'colour' -> 'colour_code' nội bộ để tránh trùng lặp với root field 'colour'
+                        for v in values:
+                            if "colour" in v:
+                                v["colour_code"] = v.pop("colour")
+                        colour_list.extend(values)
                     elif group == "custom":
                         custom_list.extend(values)
                 
-                # Lưu dưới dạng JSON string để đồng bộ với cách xử lý trong load_summary_to_gcs.py (nếu để list/dict nó cũng bị string hóa)
-                data["stone"] = json.dumps(stone_list)
-                data["color"] = json.dumps(color_list)
-                data["custom"] = json.dumps(custom_list)
+                # Lưu dưới dạng list object để PyArrow có thể xử lý mapping sang struct/list thay vì string
+                data["stone"] = stone_list
+                data["colour"] = colour_list
+                data["custom"] = custom_list
                 
                 return data
         except json.JSONDecodeError:

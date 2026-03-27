@@ -204,8 +204,8 @@ def get_product_info_pyarrow_schema():
         pa.field("is_default", pa.bool_()),
     ]
     
-    color_fields = common_option_fields + [
-        pa.field("colour", pa.string()),
+    colour_fields = common_option_fields + [
+        pa.field("colour_code", pa.string()),
         pa.field("metal", pa.string()),
         pa.field("colour_label", pa.string()),
         pa.field("metal_label", pa.string()),
@@ -246,7 +246,7 @@ def get_product_info_pyarrow_schema():
         ("media_image", pa.struct(media_image_fields)),
         ("media_video", pa.struct(media_video_fields)),
         ("stone", pa.list_(pa.struct(stone_fields))),
-        ("color", pa.list_(pa.struct(color_fields))),
+        ("colour", pa.list_(pa.struct(colour_fields))),
         ("custom", pa.list_(pa.struct(common_option_fields))),
     ])
 
